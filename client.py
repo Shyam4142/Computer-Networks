@@ -13,7 +13,7 @@ while True:
         clientNum = int(clientNum)
     # Catches value errors and repeats the loop
     except ValueError:
-        print("The input must be of integer type.")
+        print("The input must be of integer type." + "\n")
         continue
     # Ends loop regardless of whether integer is in range [1, 100] to provide a way to terminate the server
     break
@@ -23,25 +23,25 @@ client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Connects to server using host and port 
 client.connect((host, port))
-print("Client socket requested connection to server socket.")
+print("\n" + "Client socket requested connection to server socket at address: (" + host + ", " + str(port) + ")." + "\n")
 
 # Message string with client's name and sum 
 messageStr = clientName + ',' + str(clientNum)
 
 # Message is encoded and sent to server
 client.send(messageStr.encode('utf-8'))
-print("Client sent message to server.")
+print("Client sent message to server: " + messageStr + "." + "\n")
 
 # Checks for invalid clientNum to know that server will terminate
 if(clientNum < 1 or clientNum > 100):
     # Closes client socket early because server won't send a response
-    print("Client socket will terminate: invalid client number.")
+    print("Client socket will terminate: " + str(clientNum) + " is an invalid client number" + "\n" + "\n")
     client.close()
     exit()
 
 # Recieves up to 1024 bytes from server and decodes it into a string
 recieveStr = client.recv(1024).decode('utf-8')
-print("Client recieved response from server.")
+print("Client recieved response from server: " + recieveStr + "." + "\n")
 
 # Splits the recieved string into server name and number with , as delimiter
 serverName, serverNum = recieveStr.split(',')
@@ -51,8 +51,8 @@ sum = clientNum + int(serverNum)
 
 # Displays Client's Name and Number, Server's Name and Number, and the Sum
 print("Client Name: " + clientName + "," + " Server Name: " + serverName)
-print("Server Number: " + serverNum + "," + " Client Number: " + str(clientNum) + "," +  " Sum: " + str(sum))
+print("Server Number: " + serverNum + "," + " Client Number: " + str(clientNum) + "," +  " Sum: " + str(sum) + "\n")
 
 # Client socket is closed to terminate the program
-print("Client socket will terminate.")
+print("Client socket will terminate." + "\n" + "\n" )
 client.close()

@@ -13,16 +13,17 @@ server.bind((host, port))
 
 # Server starts listening for connections with up to 1 backlog
 server.listen(1)
-print("Server is listening for client connections on port: " + str(port))
+print("Server is listening for client connections on port: " + str(port) + "\n")
 
 # Server continously looks for new clients
 while True:
     # When there is a client request, server stores the client socket and address
     client, address = server.accept()
-    print("Server accepted connection from client address: " + str(address))
+    print("Server accepted connection from client address: " + str(address) + "\n")
 
     # Recieves up to 1024 bytes from client and decodes it into a string
     recieveStr = client.recv(1024).decode('utf-8')
+    print("Server recieved message from client: " + recieveStr + "." + "\n")
 
     # Splits the recieved string into client name and number with , as delimiter
     clientName, clientNum = recieveStr.split(',')
@@ -32,7 +33,7 @@ while True:
     # If the client number is not within bounds [1, 100]
     if not(1 <= int(clientNum) <= 100):
         # Client connection is closed and server breaks out of the loop (way to terminate infinite loop)
-        print("Server recieved out of range number from client. Server will close sockets and terminate.")
+        print("\n" + "Server recieved out of range number from client: " + clientNum + ". Server will close sockets and terminate.")
         client.close()
         break
 
@@ -41,19 +42,19 @@ while True:
 
     # Sum of serverNum and clientNum
     sum = serverNum + int(clientNum)
-    print("Server Number: " + str(serverNum) + "," + " Client Number: " + clientNum + "," +  " Sum: " + str(sum))
+    print("Server Number: " + str(serverNum) + "," + " Client Number: " + clientNum + "," +  " Sum: " + str(sum) + "\n")
 
     # Response string with its own server name and sum 
     responseStr = serverName + "," + str(serverNum)
     
     # Response is encoded and sent to the client
     client.send(responseStr.encode('utf-8'))
-    print("Server sent response message to client.")
+    print("Server sent response message to client: " + responseStr + "." + "\n") 
 
     # Client socket is closed
     client.close()
-    print("Server closed connection to the client socket.")
-    print("Server is listening for client connections on port: " + str(port))
+    print("Server closed connection to the client socket." + "\n" + "\n")
+    print("Server is listening for client connections on port: " + str(port) + "\n")
 
 # Server socket is closed
 server.close()
